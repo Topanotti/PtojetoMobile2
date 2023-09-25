@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameslist2/controller/developer_controller.dart';
+import 'package:gameslist2/view/developer_list.dart';
 
 class AddDeveloperView extends StatelessWidget {
   final DeveloperController developerController = DeveloperController();
@@ -58,6 +59,19 @@ class AddDeveloperView extends StatelessWidget {
               },
               child: Text('Adicionar Desenvolvedora'),
             ),
+
+            ElevatedButton(
+              onPressed: () {
+                // Navegue para a tela PlatformListView
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DeveloperListView(),
+                  ),
+                );
+              },
+              child: Text('Ver Desenvolvedoras'),
+            ),
+
           ],
         ),
       ),

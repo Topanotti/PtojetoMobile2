@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gameslist2/view/add_developer.dart';
+import 'package:gameslist2/view/add_game.dart';
 import 'package:gameslist2/view/add_platform.dart';
 
 class HomePage extends StatelessWidget {
@@ -79,13 +80,11 @@ void showAddOptions(BuildContext context) {
             title: Text('Adicionar Jogo'),
             onTap: () {
               Navigator.of(context).pop();
-              // Implemente a navegação para a tela de adição de jogo aqui
-              // Exemplo:
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => AddGameView(),
-              //   ),
-              // );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddGameView(),
+                ),
+              );
             },
           ),
         ],

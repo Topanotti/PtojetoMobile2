@@ -1,10 +1,14 @@
+import 'platform_model.dart';
+import 'developer_model.dart';
+
 class Game {
-  final String id;
+  final String? id;
   final String name;
   final String logoUrl;
   final int totalHours;
   final double price;
-  final String developerId;
+  final Developer developer; // Referência para a desenvolvedora
+  final Platform platform; // Referência para a plataforma
   final bool finished;
 
   Game({
@@ -13,7 +17,10 @@ class Game {
     required this.logoUrl,
     required this.totalHours,
     required this.price,
-    required this.developerId,
+    required this.developer,
+    required this.platform,
     required this.finished,
   });
+
+
 }
