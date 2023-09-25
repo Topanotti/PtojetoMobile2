@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "596739792903",
+    "project_id": "gameslist2-cf588",
+    "storage_bucket": "gameslist2-cf588.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596739792903:android:ec81820290b488f70ecaa2",
+        "android_client_info": {
+          "package_name": "com.example.gameslist2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhU5Lrvf3adB3LUsgiAbhxygaARQ4D4kA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
