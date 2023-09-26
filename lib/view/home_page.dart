@@ -10,6 +10,28 @@ class HomePage extends StatelessWidget {
 
   HomePage({required this.games});
 
+  Future<void> updateGameList(BuildContext context) async {
+    final updatedGames = await GameController().getGamesFromFirestore();
+    //Navigator.of(context).pop(); // Feche a tela de adição de jogo (opcional) Da erro
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => HomePage(
+          games: updatedGames,
+        ),
+      ),
+    );
+  }
+
+  void _updateGameStatus(BuildContext context, String gameId, bool isFinished) async {
+    await GameController().updateGameFinishedStatus(gameId, isFinished);
+    updateGameList(context);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(isFinished ? 'Jogo marcado como finalizado' : 'Jogo marcado como não finalizado'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +42,7 @@ class HomePage extends StatelessWidget {
       body: ListView.builder(
         itemCount: games.length,
         itemBuilder: (context, index) {
-          return GameListItem(game: games[index]);
+          return GameListItem(game: games[index], updateGameStatus: _updateGameStatus);
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -44,7 +66,6 @@ class HomePage extends StatelessWidget {
               title: Text('Adicionar Plataforma'),
               onTap: () {
                 Navigator.of(context).pop();
-                // Navegar para a tela de adição de plataforma
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => AddPlatformView(),
@@ -57,7 +78,6 @@ class HomePage extends StatelessWidget {
               title: Text('Adicionar Desenvolvedor'),
               onTap: () {
                 Navigator.of(context).pop();
-                // Navegar para a tela de adição de desenvolvedor
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => AddDeveloperView(),
@@ -72,7 +92,11 @@ class HomePage extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => AddGameView(),
+                    builder: (context) => AddGameView(
+                      onGameAdded: () {
+                        updateGameList(context);
+                      },
+                    ),
                   ),
                 );
               },
@@ -84,25 +108,25 @@ class HomePage extends StatelessWidget {
   }
 }
 
-
-
 class GameListItem extends StatelessWidget {
   final Game game;
+  final Function(BuildContext context, String gameId, bool isFinished) updateGameStatus;
 
-  GameListItem({required this.game});
+  GameListItem({required this.game, required this.updateGameStatus});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.network(game.logoUrl), // Exibe a logo do jogo
-      title: Text(game.name), // Exibe o nome do jogo
+      leading: Image.network(game.logoUrl),
+      title: Text(game.name),
       trailing: ElevatedButton(
         onPressed: () {
-          // Lógica para marcar o jogo como finalizado ou desfazer
-          // Você pode implementar a lógica aqui
-          // Por exemplo, você pode chamar uma função para atualizar o estado do jogo no Firebase Firestore
+          updateGameStatus(context, game.id, !game.finished);
         },
-        child: Text(game.finished ? 'Desfazer' : 'Finalizado'),
+        child: Text(game.finished ? 'Finalizado' : 'Finalizar'),
+        style: ElevatedButton.styleFrom(
+          primary: game.finished ? Colors.red : null,
+        ),
       ),
     );
   }

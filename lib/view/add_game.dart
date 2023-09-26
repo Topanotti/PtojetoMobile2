@@ -6,6 +6,10 @@ import 'package:gameslist2/model/developer_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddGameView extends StatefulWidget {
+  
+  final Function onGameAdded;
+  AddGameView({required this.onGameAdded});
+
   @override
   _AddGameViewState createState() => _AddGameViewState();
 }
@@ -150,6 +154,9 @@ class _AddGameViewState extends State<AddGameView> {
 
                   // Chame a função do controlador para adicionar o jogo
                   gameController.addGameToFirestore(newGame);
+
+                  // Chame o callback para notificar a HomePage
+                  widget.onGameAdded(); // Isso notificará a HomePage
 
                   // Limpe os campos após adicionar o jogo
                   _nameController.clear();

@@ -21,7 +21,8 @@ class GameController {
       print('Erro ao adicionar o jogo: $e');
     }
   }
-  
+
+  // Implemente métodos para recuperar a lista de jogos e outras operações relacionadas a jogos aqui.
   Future<List<Game>> getGamesFromFirestore() async {
     final gamesQuery = _firestore.collection('games');
     final gamesSnapshot = await gamesQuery.get();
@@ -29,5 +30,10 @@ class GameController {
     return gamesSnapshot.docs.map((doc) => Game.fromSnapshot(doc)).toList();
   }
 
-  // Implemente métodos para recuperar a lista de jogos e outras operações relacionadas a jogos aqui.
+  Future<void> updateGameFinishedStatus(String gameId, bool isFinished) async {
+    await FirebaseFirestore.instance
+        .collection('games')
+        .doc(gameId)
+        .update({'finished': isFinished});
+  }  
 }
