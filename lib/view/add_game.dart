@@ -36,25 +36,32 @@ class _AddGameViewState extends State<AddGameView> {
 
   // Função para carregar os desenvolvedores do Firebase Firestore
   Future<void> _loadDeveloperItems() async {
+    print("Loading developers...");
     final developersQuery = FirebaseFirestore.instance.collection('developers');
     final developersSnapshot = await developersQuery.get();
-    
+
+    developerItems.clear(); // Limpe a lista antes de adicionar itens
+
     for (var doc in developersSnapshot.docs) {
       final developer = Developer.fromSnapshot(doc);
       developerItems.add(
-        DropdownMenuItem(
+       DropdownMenuItem(
           value: developer.id,
           child: Text(developer.name),
         ),
       );
     }
+    setState(() {});
   }
 
   // Função para carregar as plataformas do Firebase Firestore
   Future<void> _loadPlatformItems() async {
+    print("Loading platforms...");
     final platformsQuery = FirebaseFirestore.instance.collection('platforms');
     final platformsSnapshot = await platformsQuery.get();
     
+    platformItems.clear(); // Limpe a lista antes de adicionar itens
+
     for (var doc in platformsSnapshot.docs) {
       final platform = Platform.fromSnapshot(doc);
       platformItems.add(
@@ -64,6 +71,7 @@ class _AddGameViewState extends State<AddGameView> {
         ),
       );
     }
+    setState(() {});
   }
 
   @override
@@ -130,13 +138,13 @@ class _AddGameViewState extends State<AddGameView> {
 
                 if (name.isNotEmpty && logoUrl.isNotEmpty && developerId != null && platformId != null) {
                   final newGame = Game(
-                    id: '', // O ID será atribuído automaticamente pelo Firebase
+                    id: '', // Deixe vazio para que o Firebase gere automaticamenteID será atribuído automaticamente pelo Firebase
                     name: name,
                     logoUrl: logoUrl,
                     totalHours: totalHours,
                     price: price,
-                    developerId: developerId,
-                    platformId: platformId,
+                    developerId: selectedDeveloperId!,
+                    platformId: selectedPlatformId!,
                     finished: false, // Por padrão, um novo jogo não está finalizado
                   );
 
